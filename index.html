@@ -1,43 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>77328 Felipe Kaiser</title>
-  <style>
-        body { font-family: Arial, sans-serif; margin: 0 auto; }
-        h1 { color: #333; text-align:center }
-        p { margin: 10px 0; font-size: 18px }
-        #remote-data-container { max-width: 80%; margin: 20px auto; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px }
-        #button-container { text-align: center; margin-bottom: 20px }
-        .btn {
-            display: inline-block; padding: 10px 20px; font-weight: bold;
-            color: #fff; background-color: #007BFF;
-            border: none; border-radius: 5px; cursor: pointer;
-            font-size: 18px; transition: background-color 0.3s ease;
-        }
-        .btn:hover { background-color: #0056b3; }
-        img { display: block; margin: 10px 0; }
+<meta charset="UTF-8">
+<title>77328 Felipe Kaiser</title>
+
+<style>
+body { font-family: Arial, sans-serif; margin: 0 auto; }
+
+h1 { color: #333; text-align:center }
+
+p { margin: 10px 0; font-size: 18px }
+
+#remote-data-container {
+    max-width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+#button-container {
+    text-align: center;
+    margin-bottom: 20px
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.btn:hover { background-color: #0056b3 }
+
+.controls{
+    text-align:center;
+    margin-bottom:15px;
+}
+
+.card{
+    border:1px solid #ccc;
+    padding:12px;
+    border-radius:6px;
+    background:white;
+}
+
+img { display:block; margin:10px auto }
 </style>
+
 </head>
+
 <body>
 
-  <h1>Countries from Europe</h1>
+<h1>Display Remote Data</h1>
 
-  
-<div id="remote-data-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;"></div>
-
-  <h1>Display remote data</h1>
-    <div id="button-container">
-        <button id="btn-countries">Load Countries</button>
-        <button id="btn-users">Load Users</button>
-        <button id="btn-rm">Load Rick & Morty</button>
-    </div>
-
-    
-
-    
+<div id="button-container">
+<button id="btn-countries" class="btn">Load Countries</button>
+<button id="btn-users" class="btn">Load Users</button>
+<button id="btn-rm" class="btn">Load Rick & Morty</button>
+</div>
 
 
-  <script src="list-remote.js"></script>
+<div class="controls">
+
+<select id="region-select">
+<option value="europe">Europe</option>
+<option value="asia">Asia</option>
+<option value="africa">Africa</option>
+<option value="americas">Americas</option>
+</select>
+
+<input type="text" id="rm-search" placeholder="Search Rick & Morty character">
+<button id="rm-search-btn">Search</button>
+
+</div>
+
+
+<div id="remote-data-container"></div>
+
+
+<script src="list-remote.js"></script>
+
 </body>
 </html>

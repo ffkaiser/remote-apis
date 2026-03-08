@@ -1,139 +1,219 @@
 
-// Fetch function
 async function fetchCountriesData() {
+
+    const region = document.getElementById("region-select").value;
+
     try {
-        const response = await fetch("https://restcountries.com/v3.1/region/europe");
+
+        const response = await fetch(`https://restcountries.com/v3.1/region/${region}`);
+
         if (!response.ok) {
-            console.log(`Network response was not ok - Status: ${response.status}`);
+            console.log("Network error:", response.status);
             return;
         }
+
         const data = await response.json();
+
         console.log(data);
-        // Verify the code is working by logging the data to the console
-        console.log(data);
-        // Call the display function
+
         displayCountriesData(data);
+
     } catch (error) {
+
         const container = document.getElementById("remote-data-container");
-        container.innerHTML = '<p class="error">⚠️ Failed to load data. Please try again later.</p>';   
-        console.error(`Error fetching data: ${error}`);
+        container.innerHTML = "<p>⚠️ Failed to load countries.</p>";
+
+        console.error(error);
     }
 }
+
+
 
 async function fetchUsersData() {
+
     try {
-        const response = await fetch("https://randomuser.me/api/?results=10");
+
+        const response = await fetch("https://jsonplaceholder.typicode.com/users");
+
         if (!response.ok) {
-            console.log(`Network response was not ok - Status: ${response.status}`);
+            console.log("Network error:", response.status);
             return;
         }
+
         const data = await response.json();
+
         console.log(data);
-        // Verify the code is working by logging the data to the console
-        console.log(data);
-        // Call the display function
-        displayUsersData(data.results);
+
+        displayUsersData(data);
+
     } catch (error) {
+
         const container = document.getElementById("remote-data-container");
-        container.innerHTML = '<p class="error">⚠️ Failed to load data. Please try again later.</p>';   
-        console.error(`Error fetching data: ${error}`);
+        container.innerHTML = "<p>⚠️ Failed to load users.</p>";
+
+        console.error(error);
     }
 }
 
+
+
 async function fetchRickMortyData() {
+
     try {
+
         const response = await fetch("https://rickandmortyapi.com/api/character");
 
         if (!response.ok) {
-            console.log(`Network response was not ok - Status: ${response.status}`);
+            console.log("Network error:", response.status);
             return;
         }
 
         const data = await response.json();
 
-        console.log(data); // ✅ Log first (as required)
+        console.log(data);
 
-        // Characters array is inside data.results
         displayRickMortyData(data.results);
 
     } catch (error) {
+
         const container = document.getElementById("remote-data-container");
-        container.innerHTML = '<p class="error">⚠️ Failed to load data. Please try again later.</p>';
-        console.error(`Error fetching data: ${error}`);
+        container.innerHTML = "<p>⚠️ Failed to load characters.</p>";
+
+        console.error(error);
     }
 }
 
-// Display function
+
+
+async function searchRickMorty() {
+
+    const name = document.getElementById("rm-search").value;
+
+    try {
+
+        const response = await fetch(`https://rickandmortyapi.com/api/character/?name=${name}`);
+
+        if (!response.ok) {
+            throw new Error("Character not found");
+        }
+
+        const data = await response.json();
+
+        displayRickMortyData(data.results);
+
+    } catch (error) {
+
+        const container = document.getElementById("remote-data-container");
+        container.innerHTML = "<p>No character found.</p>";
+
+    }
+}
+
+
+
 function displayCountriesData(countriesArray) {
+
     const container = document.getElementById("remote-data-container");
-    let htmlOutput = "";
+
+    let html = "";
 
     countriesArray.forEach(country => {
-        htmlOutput += `
-    <div style="border: 1px solid #ccc; padding: 12px; border-radius: 6px;"><img src="${country.flags.png}" alt="Flag of ${country.name.common}" width="100">
-         <p>
-            <b>${country.name.common}</b><br>
-            Capital: ${country.capital[0]}<br>
-            Population: ${country.population.toLocaleString()}<br>            
-            Region: ${country.region}
-         </p>
-    </div>
-`;
+
+        html += `
+        <div class="card">
+
+        <img src="${country.flags.png}" width="100">
+
+        <p>
+        <b>${country.name.common}</b><br>
+        Capital: ${country.capital ? country.capital[0] : "N/A"}<br>
+        Population: ${country.population.toLocaleString()}<br>
+        Region: ${country.region}
+        </p>
+
+        </div>
+        `;
     });
 
-    container.innerHTML = htmlOutput;
+    container.innerHTML = html;
 }
+
+
 
 function displayUsersData(usersArray) {
+
     const container = document.getElementById("remote-data-container");
-    let htmlOutput = "";
+
+    let html = "";
 
     usersArray.forEach(user => {
-        htmlOutput += `
-        <p><img src="${user.picture.thumbnail}" alt="Picture of ${user.name.first} ${user.name.last}" width="50"></p>
-            <p>
-            <b>${user.name.first} ${user.name.last}</b><br>
-            Email: ${user.email}<br>              
-            Location: ${user.location.city}, ${user.location.country}
-            </p>
+
+        html += `
+        <div class="card">
+
+        <p>
+        <b>${user.name}</b><br>
+        Email: ${user.email}<br>
+        City: ${user.address.city}<br>
+        Company: ${user.company.name}
+        </p>
+
+        </div>
         `;
     });
-    container.innerHTML = htmlOutput;
+
+    container.innerHTML = html;
 }
+
+
 
 function displayRickMortyData(rmArray) {
+
     const container = document.getElementById("remote-data-container");
-    let htmlOutput = "";
+
+    let html = "";
 
     rmArray.forEach(character => {
-        htmlOutput += `
-        <p><img src="${character.image}" alt="Image of ${character.name}" width="50"></p> 
-        <p> 
-        <b>${character.name}</b><br> 
-        Status: ${character.status}<br> 
-        Species: ${character.species} 
+
+        html += `
+        <div class="card">
+
+        <img src="${character.image}" width="100">
+
+        <p>
+        <b>${character.name}</b><br>
+        Status: ${character.status}<br>
+        Species: ${character.species}
         </p>
+
+        </div>
         `;
     });
 
-    container.innerHTML = htmlOutput;
+    container.innerHTML = html;
 }
 
-// Event listener on the parent container
 
-// Event listener on the parent container
-document.getElementById("button-container").addEventListener("click", function(e) {
+
+document.getElementById("button-container").addEventListener("click", function(e){
 
     const button = e.target.closest("button");
-    if (!button) return;
 
-    if (button.id === "btn-countries") {
+    if(!button) return;
+
+    if(button.id === "btn-countries"){
         fetchCountriesData();
-    } 
-    else if (button.id === "btn-users") {
+    }
+
+    else if(button.id === "btn-users"){
         fetchUsersData();
     }
-    else if (button.id === "btn-rm") {
+
+    else if(button.id === "btn-rm"){
         fetchRickMortyData();
     }
+
 });
+
+
+document.getElementById("rm-search-btn").addEventListener("click", searchRickMorty);
